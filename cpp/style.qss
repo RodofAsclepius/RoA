@@ -1,0 +1,102 @@
+QWidget
+{
+    background-color: white;
+    border:none;
+    color: black;
+}
+
+QDialog
+{
+    background-color: white;
+    border:none;
+    color: black;
+}
+QComboBox
+{
+    border: 1px solid lightgray;
+    height: 30px;
+    border-radius: 5px;
+    min-width: 150px;
+
+}
+QComboBox::drop-down
+{
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 0px;
+    border-left-color: darkgray;
+    border-left-style: solid;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+QComboBox::down-arrow
+{
+    image: url(:/view/images/ui/down_arrow_disabled.png);
+}
+
+QComboBox::down-arrow:on, QComboBox::down-arrow:hover,
+QComboBox::down-arrow:focus
+{
+    image: url(:/view/images/ui/down_arrow.png);
+}
+
+QLineEdit
+{
+    background-color: white;
+    padding: 5px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    color: black;
+}
+
+QButton
+{
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    min-height: 20px;
+    padding: 5px;
+}
+
+QCheckBox
+{
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    padding: 5px;
+    min-height: 20px;
+}
+
+QPushButton
+{
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    min-height: 15px;
+    padding: 5px;
+}
+
+QSpinBox, QDoubleSpinBox
+{
+    background-color: white;
+    padding: 0px;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    color: black;
+    min-height: 20px;
+}
+
+QSpinBox::up-button, QDoubleSpinBox::up-button
+{
+    min-width: 20px;
+}
+
+QSpinBox::down-button, QDoubleSpinBox::down-button
+{
+    min-width: 20px;
+}
+
+QTabWidget::pane {
+    border-bottom: 1px solid gray;
+}
+
+

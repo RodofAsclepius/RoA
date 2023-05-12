@@ -1,0 +1,1 @@
+Data reused from Cortez, P. and Silva, A. (2008) Using Data Mining to Predict Secondary School Student Performance. Proceedings of 5th Annual Future Business Technology Conference, Porto, 9-11 April 2008, 5-12. https://www.scirp.org/reference/referencespapers.aspx?referenceid=2840955
