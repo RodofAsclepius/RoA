@@ -20,6 +20,7 @@ init = function ()
   usePackage('weights') # wtd.hist
   usePackage('dplyr')
   usePackage('MXM') # compute causal models
+  usePackage('purrr')
   
   #usePackage('drtmle') # wald_test
   
@@ -172,13 +173,13 @@ prepareDataFrames = function()
     
     maindfrows = nrow(maindataframe)
     print(maindfrows)
-    if(maindfrows > 200)
-    {
+    # if(maindfrows > 200)
+    # {
       #print('sampling, because > 500 rows')
       
       # maindataframe = sample_n(maindataframe, 350)  
       #maindataframe = sample_n(maindataframe, 500)  
-    }
+    # }
     maindataframetypes <- dbGetQuery(con, paste("SELECT * FROM ", dbconfig["variablestypestablename"]));
 
     for(i in 1:nrow(maindataframetypes) )
@@ -1284,40 +1285,36 @@ computeCausalModel = function(causalModel, alphaValue)
   dfGroupQuery = group$query
   treat = causalModel$treatment$variable$name
 
-  maintable = sampleDataFrames(500)
+  maintable <- eval(as.name("main"), .GlobalEnv)
   variablestypestable = eval(as.name("variablestypes"), .GlobalEnv)
   
   dfGroup = subset(maintable, eval(parse(text=paste(dfGroupQuery))))
-
-  print("*")  
   covsInGroupQuery = all.vars(parse(text=paste(group$query)))
-  drops = list("p.score", "ID", 
-                unlist(covsInGroupQuery))
 
-  print("**")
+  # For the demo speed up the algorithm by sampling
+  dfGroup = sample_n(dfGroup, 500)  
+
+  # convert character to factors to make sure
+  dfGroup[sapply(dfGroup, is.character)] <- lapply(dfGroup[sapply(dfGroup, is.character)], as.factor)
+
+  # We regard up to 5 values a factor
+   col_names <- sapply(dfGroup, function(col) length(unique(col)) < 5)
+   dfGroup[ , col_names] <- lapply(dfGroup[ , col_names] , factor)
+
+  # Remove 1 level factors
+  dfGroup = dfGroup[, sapply(dfGroup, nlevels) > 1]
   
-  # Speed up the proces for demonstrational purposes using sampling
+
+  #Drop some columns we don't need
+  drops = list("p.score", "ID", "computedweight", unlist(covsInGroupQuery))
   dfGroupFiltered = dfGroup[ , !(names(dfGroup) %in% drops)]
-  dfGroupFiltered = sample_n(dfGroupFiltered, 500)  
-  #dfGroupFiltered = sample_n(dfGroup, 500)
   
-  variablestypestable = eval(as.name("variablestypes"), .GlobalEnv)
-
-  print(variablestypestable)
-  print(dfGroupFiltered)
-
   gSkeleton = MXM::pc.skel(dfGroupFiltered, method = "comb.mm", alpha = alphaValue, R=2) ## skeleton
-  #print(str(gSkeleton))
-
-  print("***")
   gSkelDirected = MXM::pc.or(gSkeleton)
   gDirected <- gSkelDirected$G
   
-  print("****")
   # Directed edges
   adjList = as.matrix(apply(gDirected==2, 1 ,function(a) (colnames(gDirected)[a])))
-  #print(adjList)
-
 
   adjListResult = list()
   for(i in 1:length(adjList))
@@ -1401,6 +1398,11 @@ computeAdjustmentModelsAux = function(causalModel)
   
   dag = paste("dag {", arrows, "}", collapse = "")
   g <- dagitty(dag)
+
+#  print(g)
+  # dag = "dag{ romantic -> g3 ; age -> romantic ; age -> g3 ; absences -> romantic; absences -> g3}"
+  # g <- dagitty(dag)
+  # adjustmentSets = adjustmentSets( g, "romantic", "g3" )
 
   print("exposure")
   print(causalModel$treatment$variable$name)
@@ -1508,6 +1510,21 @@ computeMarkovModels = function(causalModels, allVariables)
   return(result)
 }
 
+markov_blanket_fix <- function(graph, nodes) {
+  map_nodes <- function(nodes, .f) {
+    nodes %>% 
+      map(.f, x = graph) %>% 
+      unlist()
+  }
+  nodes %>% 
+    map_nodes(children) %>% 
+    map_nodes(parents) %>% 
+    union(nodes %>% map_nodes(parents)) %>% 
+    union(nodes %>% map_nodes(children)) %>% 
+    setdiff(nodes) %>% 
+    sort()
+}
+
 computeMarkovModelsAux = function(causalModel, allVariables)
 {
   print("computeMarkovModelsAux")
@@ -1542,7 +1559,8 @@ computeMarkovModelsAux = function(causalModel, allVariables)
   treatmentName = paste(causalModel$treatment$variable$name)
   effectName = paste(causalModel$effect$variable$name)
 
-  mbresult = markovBlanket(g, treatmentName)
+  #mbresult = markovBlanket(g, treatmentName)
+  mbresult = markov_blanket_fix(g, treatmentName)
 
   variabesMB = list()
   for(varname in mbresult)
