@@ -1081,25 +1081,6 @@ computeEffectModel = function(effectsModel)
 
   estformula = build.formula(effect$variable$name, treatname)
 
-  # regres = svyglm(formula=estformula, design=estimationDesign)
-  # sumregres = summary(regres)
-  # estimate = sumregres$coefficients[[2,  "Estimate"]]
-  # eststderror = sumregres$coefficients[[2,  "Std. Error"]]
-  # pvalue = sumregres$coefficients[[2,  "Pr(>|t|)"]]
-
-  # estimationVarsDesign = as.svrepdesign(estimationDesign)
-  # weightedVars = svyby(formula=~eval(parse(text=paste(effect$variable$name))), by=~eval(parse(text=paste(treatname))), 
-  #                       design=estimationVarsDesign, FUN=svyvar)
-  # varianceUntreated = weightedVars[paste(balanceModel$treatment$levelControl), 2]
-
-  # effectSize = estimate
-  # effectSE = eststderror
-  # PValue = pvalue
-  # glassDelta = estimate / sqrt(varianceUntreated)
-
-
-  #print("***")
-
   # Violin plot data ---------------------------------------
   treatLevels = levels(dfGroup[[paste(treatname)]])
   levelT =  paste(balanceModel$treatment$levelTreatment)
@@ -1305,7 +1286,7 @@ computeCausalModel = function(causalModel, alphaValue)
   dfGroup = dfGroup[, sapply(dfGroup, nlevels) > 1]
   
 
-  #Drop some columns we don't need
+  # Drop some columns we don't need
   drops = list("p.score", "ID", "computedweight", unlist(covsInGroupQuery))
   dfGroupFiltered = dfGroup[ , !(names(dfGroup) %in% drops)]
   
@@ -1328,7 +1309,6 @@ computeCausalModel = function(causalModel, alphaValue)
       adjListResult[[varName]] = adjs  
     }
   }
-  print("****")
   
   causalModel[["minedEdges"]] = adjListResult
   
