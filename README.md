@@ -8,11 +8,11 @@ RoA is a proof-of-concept application that provides visual analytics support for
 * RoA depends on the Open Graph Drawing Framework (OGDF) library (see https://ogdf.uos.de/releases/). A pre-compiled version (.so) for Linux is added in the lib folder.
 
 Plumber and PostgreSQL need to be installed inside a working docker environment. See https://www.docker.com/ for instructions on how to set up this environment. Next, use the build and management scripts in the docker folder to build the docker images and run instances of them before starting RoA.
-	* docker/postgresql/install.sh
-	* docker/postgresql/up.sh
-	* docker/rbase/cleanbuild.sh
-	* docker/plumber/cleanbuild.sh
-	* docker/plumber/up.sh (and down.sh to stop)
+* docker/postgresql/install.sh
+* docker/postgresql/up.sh
+* docker/rbase/cleanbuild.sh
+* docker/plumber/cleanbuild.sh
+* docker/plumber/up.sh (and down.sh to stop)
 
 ## Building RoA
 The application itself is a QT 6.4 application. To build it, you need to install the Qt framework, which can be downloaded at https://www.qt.io/download-open-source. After installation, use the QT Creator IDE to open asclepius.pro project file in the cpp folder. Please set the build and configuration directories to the bin folder. Then hit play.
