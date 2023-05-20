@@ -27,7 +27,7 @@ To add data to the PostgreSQL instance, use a tool like DBeaver (see https://dbe
 ## Virtual appliance
 For convenience, a virtual appliance file is made available via DropBox that can be imported into software like VirtualBox. The file includes a pre-installed version of RoA inside a virtual machine running a Linux desktop. The virtual appliance can be downloaded here: https://www.dropbox.com/scl/fo/93os5n3a7ckcddjdy80rz/h?dl=0&rlkey=jles1jhw9z0gqeywnngxr7spq .
 
-## Qt License obligation
+## Qt license obligation
 * https://www.qt.io/licensing/open-source-lgpl-obligations
 
 Developing with LGPL
