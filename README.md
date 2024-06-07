@@ -25,7 +25,7 @@ The application itself is a QT 6.4 application (LGPL license details below). To 
 To add data to the PostgreSQL instance, use a tool like DBeaver (see https://dbeaver.io/). Connect to the PostgreSQL instance (using the credentials used in the small docker scripts earlier). Next, create a new database and two new tables, one called "main" and another called "types". Put your data in the main table and specify the types (numeric, integer, factor) for each variable in the main table in the types table. The types table needs to have two columns for this, namely "variable" and "type". For example, data, check the data folder.
 
 ## Virtual appliance
-For convenience, a virtual appliance file is made available via DropBox that can be imported into software like VirtualBox. The file includes a pre-installed version of RoA inside a virtual machine running a Linux desktop. The virtual appliance can be downloaded here: https://www.dropbox.com/sh/99awsatroanuxsn/AAD-RPjOKS_673sxXLiZR9uba?dl=0 .
+For convenience, a virtual appliance file is made available via DropBox that can be imported into software like VirtualBox. The file includes a pre-installed version of RoA inside a virtual machine running a Linux desktop. The virtual appliance can be downloaded here: https://doi.org/10.5281/zenodo.11518056 .
 
 ## Qt license obligation
 * https://www.qt.io/licensing/open-source-lgpl-obligations
